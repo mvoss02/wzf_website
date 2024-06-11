@@ -1,0 +1,153 @@
+body {
+    background-color: #23272b;
+    color: wheat; /* Set text color */
+}
+
+.container {
+    max-width: 80%;
+    margin: auto;
+}
+
+.league-card {
+    margin-bottom: 20px; /* Add space between league cards */
+}
+
+.league-container {
+    padding-top: 20px;
+    width: 100%; /* Ensure the league container spans the whole width */
+}
+
+.league-header {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.divider {
+    width: 100%; /* Ensure the divider spans the whole width */
+    border-color: #ffffff; /* Change the color of the divider */
+    margin: 20px 10px; /* Add some space above and below the divider */
+}
+
+.card {
+    min-height: 280px;
+    background-color: #6c757d;
+    border: 1px solid #23272b;
+    color: white;
+    margin-bottom: 10px; /* Add space between game cards */
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-text {
+    margin-bottom: 14px; /* Add space between game details */
+    font-weight: bold;
+}
+
+.team-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px; /* Add space between team logos and vs text */
+}
+
+.team-logo {
+    max-height: 40px;
+    width: auto;
+    margin: 0 10px; /* Adjust margin */
+}
+
+.league-logo {
+    max-height: 50px;
+    width: auto;
+    margin: 0px 10px; /* Adjust margin */
+}
+
+.channel-logo, .league-logo {
+    max-height: 50px;
+    width: auto;
+    margin: 10px 10px; /* Adjust margin */
+}
+
+.vs-text {
+    margin: 0 10px;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.no-channel-text {
+    font-weight: normal;
+    padding: 1.2em 0px 1.2em 0px;
+}
+
+/* Media Queries */
+/* For large screens (>= 1750px) */
+@media (min-width: 1750px) {
+    .col-lg-4 {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+    }
+}
+
+/* For medium screens (1100px <= X < 1750px) */
+@media (min-width: 1100px) and (max-width: 1749px) {
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/* For small screens (< 1100px) */
+@media (max-width: 1099px) {
+    .col-sm-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* For screens with width >= Xpx */
+@media (min-width: 600px) {
+    .team-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .team-info img {
+        margin: 0 10px; /* Adjust margin */
+    }
+    .vs-text {
+        display: block;
+        text-align: center;
+        margin: 10px 20px; /* Adjust margin */
+    }
+}
+
+.no-games-message {
+    color: wheat; /* Adjust color as needed */
+    font-size: 1.5rem; /* Adjust font size as needed */
+    text-align: center;
+    margin-top: 20px; /* Adjust margin as needed */
+}
+
+/* For screens with width < Xpx */
+@media (max-width: 599px) {
+    .team-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .team-info img {
+        margin: 10px 0; /* Adjust margin */
+    }
+    .vs-text {
+        display: block;
+        text-align: center;
+        margin: 10px 0; /* Adjust margin */
+    }
+    #league-selector {
+        margin-bottom: 10px;
+    }
+}
