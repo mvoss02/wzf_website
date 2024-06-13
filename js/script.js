@@ -101,25 +101,35 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function fetchGames(date, league) {
         const apiUrl = 'http://127.0.0.1:8000/api/games'; // Update the URL to match your backend host
-        let url = `${apiUrl}?date=${date}`;
+
+        let requestData = {
+            date: date
+        };
 
         if (league != 'Alle Spiele') {
-            const englishLeague = reverseLeagueNameTranslations[league] || league;
-            console.log(englishLeague)
-            url += `&league=${englishLeague}`;
+            requestData.league = reverseLeagueNameTranslations[league] || league;
         }
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                displayGames(data);
-            })
-            .catch(error => {
-                console.error('Error fetching games:', error);
-            });
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            displayGames(data);
+        })
+        .catch(error => {
+            console.error('Error fetching games:', error);
+        });
     }
 
-    function displayGames(games) {
+    function displayGames(response) {
+        // Parse the response body if necessary
+        const games = JSON.parse(response.body).data;
+        
         // Group games by league
         const gamesByLeague = {};
         games.forEach(game => {
