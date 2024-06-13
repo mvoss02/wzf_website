@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function fetchGames(date, league) {
         const apiUrl = process.env.REACT_APP_BACKEND_URL;
+        console.log(apiUrl)
 
         let requestData = {
             date: date
