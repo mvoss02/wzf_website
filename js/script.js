@@ -101,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function fetchGames(date, league) {
         const apiUrl = 'https://8a49pchhxd.execute-api.eu-central-1.amazonaws.com/dev'; //process.env.BACKEND_URL;
-        console.log(apiUrl)
 
         let requestData = {
             date: date
