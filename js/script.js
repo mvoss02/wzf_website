@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function fetchGames(date, league) {
-        const apiUrl = 'http://127.0.0.1:8000/api/games'; // Update the URL to match your backend host
+        const apiUrl = process.env.REACT_APP_BACKEND_URL;
 
         let requestData = {
             date: date
