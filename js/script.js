@@ -1,3 +1,6 @@
+// script.js
+import config from './config.js';
+
 document.addEventListener("DOMContentLoaded", function() {
     const dateSelector = document.getElementById('date-selector');
     const leagueSelector = document.getElementById('league-selector');
@@ -100,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function fetchGames(date, league) {
-        const apiUrl = process.env.REACT_APP_BACKEND_URL;
+        const apiUrl = config.backendUrl;
         console.log(apiUrl)
 
         let requestData = {
