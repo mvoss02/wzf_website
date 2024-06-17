@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function fetchGames(date, league) {
-        const apiUrl = 'arn:aws:execute-api:eu-central-1:471112606491:660pwa6g9l/*/POST/'; //process.env.BACKEND_URL;
+        const apiUrl = 'arn:aws:apigateway:eu-central-1::/restapis/hidje0vygd'; //process.env.BACKEND_URL;
 
         let requestData = {
             date: date
