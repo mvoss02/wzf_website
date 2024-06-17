@@ -54,8 +54,8 @@ document.addEventListener("DOMContentLoaded", function() {
         'DFB Pokal': 'DFB Pokal',
         'Bundesliga 2': '2. Bundesliga',
         'World Cup': 'Weltmeisterschaft',
-        'Euro Championship': 'Europameisterschaft',
-        'Friendlies': 'Freundschaftspiele'
+        'Euro Championship': 'Euro 2024',
+        'Friendlies': 'Friendlies'
     };
 
     const reverseLeagueNameTranslations = {};
