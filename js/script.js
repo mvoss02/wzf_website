@@ -36,9 +36,9 @@ document.addEventListener("DOMContentLoaded", function() {
             'logo': 'assets/orf.png',
             'url': 'https://orf.at/'
         },
-        'Fußball.TV1': {
-            'logo': null,
-            'url': null,
+        'MagentaTV': {
+            'logo': 'assets/magentatv.jpg',
+            'url': 'https://www.telekom.de/magenta-tv',
         }
     };
 
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function fetchGames(date, league) {
-        const apiUrl = 'https://660pwa6g9l.execute-api.eu-central-1.amazonaws.com/production'; //process.env.BACKEND_URL;
+        const apiUrl = 'arn:aws:execute-api:eu-central-1:471112606491:660pwa6g9l/*/POST/'; //process.env.BACKEND_URL;
 
         let requestData = {
             date: date
