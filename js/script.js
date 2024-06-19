@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const dateSelector = document.getElementById('date-selector');
     const leagueSelector = document.getElementById('league-selector');
     const gamesList = document.getElementById('games-list');
+    const loadingIcon = document.getElementById('loading-icon');
 
     const tvChannelInfo = {
         "Sky": {
@@ -88,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function populateLeagueSelector(leagues) {
-        const leagueSelector = document.getElementById('league-selector');
         leagueSelector.innerHTML = ''; // Clear existing options
     
         leagues.forEach(league => {
@@ -100,15 +100,19 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function fetchGames(date, league) {
-        const apiUrl = 'https://hidje0vygd.execute-api.eu-central-1.amazonaws.com/production/game_data'; //process.env.BACKEND_URL;
+        const apiUrl = 'https://hidje0vygd.execute-api.eu-central-1.amazonaws.com/production/game_data';
     
         let requestData = {
             date: date
         };
     
-        if (league != 'Alle Spiele') {
+        if (league !== 'Alle Spiele') {
             requestData.league = reverseLeagueNameTranslations[league] || league;
         }
+    
+        // Show loading icon and hide games list
+        loadingIcon.style.display = 'block';
+        gamesList.style.display = 'none';
     
         fetch(apiUrl, {
             method: 'POST',
@@ -116,10 +120,15 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
-            displayGames(data);
+            displayGames(data, league); // Pass league to displayGames
+            // Hide loading icon and show games list
+            loadingIcon.style.display = 'none';
+            gamesList.style.display = 'block';
         })
         .catch(error => {
             console.error('Error fetching games:', error);
+            // Hide loading icon on error
+            loadingIcon.style.display = 'none';
         });
     }
     
@@ -140,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
     
-    function displayGames(response) {
+    function displayGames(response, selectedLeague) {
         const games = JSON.parse(response.body).data;
         
         // Parse the tv_channel field for each game
@@ -157,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
             gamesByLeague[game.league].push(game);
         });
     
-        gamesList.innerHTML = '';
+        gamesList.innerHTML = ''; // Clear old games
     
         const noGamesFound = Object.keys(gamesByLeague).length === 0;
         if (noGamesFound) {
@@ -197,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function() {
             leagueGames.forEach(game => {
                 // Remove the seconds from the time string
                 const formattedTime = game.time ? game.time.slice(0, -3) : '';
-
+    
                 const card = document.createElement('div');
                 card.className = 'col-lg-4 col-md-6 col-sm-12 mb-4'; // Adjusted for column layout
                 card.innerHTML = `
@@ -210,20 +219,21 @@ document.addEventListener("DOMContentLoaded", function() {
                                         const channelKey = Object.keys(tvChannelInfo).find(key => channel.includes(key));
                                         if (channelKey) {
                                             const channelInfo = tvChannelInfo[channelKey];
-                                            if (channelInfo.url != null || channelInfo.logo != null)                                                return `
+                                            if (channelInfo.url != null || channelInfo.logo != null) {
+                                                return `
                                                     <a href="${channelInfo.url}" target="_blank">
                                                         <img src="${channelInfo.logo}" alt="${channelKey} logo" class="img-fluid channel-logo">
                                                     </a>`;
-                                            else {
-                                                return `<p class="card-text no-channel-text">${channelKey}</p>`
+                                            } else {
+                                                return `<p class="card-text no-channel-text">${channelKey}</p>`;
                                             }
                                         } else {
-                                            return `<p class="card-text"> ${channel}</p>`;
+                                            return `<p class="card-text">${channel}</p>`;
                                         }
                                     }).join(' ')}</div>` 
                                     : `<p class="card-text no-channel-text">Es liegen noch keine Sender vor!</p>`}
                             </div>
-                            <hr> <!-- Add horizontal line to separate team logos and "vs" text -->
+                            <hr>
                             <div class="team-info">
                                 <div class="text-center">
                                     <img src="${game.home_logo}" alt="${game.home_team} logo" class="img-fluid team-logo">
@@ -239,9 +249,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     </div>
                 `;
     
-                // Append card to gamesList
-                gamesList.appendChild(card);
+                // Append card to the league container
+                leagueContainer.querySelector('.row').appendChild(card);
             });
         }
+    
+        // Update league selector to maintain selected league after fetching games
+        leagueSelector.value = selectedLeague;
     }
 });
