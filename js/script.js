@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         fetch(apiUrl, {
             method: 'POST',
-            body: JSON.stringify(requestData)
+            body: requestData
         })
         .then(response => response.json())
         .then(data => {
