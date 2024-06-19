@@ -57,6 +57,7 @@ body {
     max-height: 40px;
     width: auto;
     margin: 0 10px; /* Adjust margin */
+    padding-bottom: 10px;
 }
 
 .league-logo {
@@ -65,8 +66,8 @@ body {
     margin: 0px 10px; /* Adjust margin */
 }
 
-.channel-logo, .league-logo {
-    max-height: 50px;
+.channel-logo {
+    max-height: 35px;
     width: auto;
     margin: 10px 10px; /* Adjust margin */
 }

@@ -101,15 +101,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function fetchGames(date, league) {
         const apiUrl = 'https://hidje0vygd.execute-api.eu-central-1.amazonaws.com/production/game_data'; //process.env.BACKEND_URL;
-
+    
         let requestData = {
             date: date
         };
-
+    
         if (league != 'Alle Spiele') {
             requestData.league = reverseLeagueNameTranslations[league] || league;
         }
-
+    
         fetch(apiUrl, {
             method: 'POST',
             body: JSON.stringify(requestData),
@@ -122,11 +122,32 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error('Error fetching games:', error);
         });
     }
-
+    
+    function parseTvChannel(tvChannelStr) {
+        if (!tvChannelStr) {
+            // If the string is empty, return an empty array
+            return [];
+        }
+    
+        try {
+            // Replace single quotes with double quotes to make it valid JSON
+            let sanitizedStr = tvChannelStr.replace(/'/g, '"');
+            // Parse the sanitized string as JSON
+            return JSON.parse(sanitizedStr);
+        } catch (e) {
+            console.error('Failed to parse tv_channel:', e);
+            return [];
+        }
+    }
+    
     function displayGames(response) {
-        // Parse the response body if necessary
         const games = JSON.parse(response.body).data;
         
+        // Parse the tv_channel field for each game
+        games.forEach(game => {
+            game.tv_channel = parseTvChannel(game.tv_channel);
+        });
+    
         // Group games by league
         const gamesByLeague = {};
         games.forEach(game => {
@@ -137,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     
         gamesList.innerHTML = '';
-
+    
         const noGamesFound = Object.keys(gamesByLeague).length === 0;
         if (noGamesFound) {
             const noGamesMessage = document.createElement('p');
@@ -150,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Display games grouped by league
         for (const league in gamesByLeague) {
             const leagueGames = gamesByLeague[league];
-
+    
             // Get translated league name or fallback to original name
             const translatedLeagueName = leagueNameTranslations[league] || league;
     
@@ -174,15 +195,18 @@ document.addEventListener("DOMContentLoaded", function() {
     
             // Display games for the league
             leagueGames.forEach(game => {
+                // Remove the seconds from the time string
+                const formattedTime = game.time ? game.time.slice(0, -3) : '';
+
                 const card = document.createElement('div');
                 card.className = 'col-lg-4 col-md-6 col-sm-12 mb-4'; // Adjusted for column layout
                 card.innerHTML = `
                     <div class="card">
                         <div class="card-body">
                             <div class="text-center mt-3">
-                                <p class="card-text">Zeit: ${game.time}</p>
-                                ${Array.isArray(game.tv_channels) && game.tv_channels.some(channel => channel.trim() !== '') ? 
-                                    `<div class="card-text">${game.tv_channels.map(channel => {
+                                <p class="card-text">Zeit: ${formattedTime}</p>
+                                ${Array.isArray(game.tv_channel) && game.tv_channel.some(channel => channel.trim() !== '') ? 
+                                    `<div class="card-text">${game.tv_channel.map(channel => {
                                         const channelKey = Object.keys(tvChannelInfo).find(key => channel.includes(key));
                                         if (channelKey) {
                                             const channelInfo = tvChannelInfo[channelKey];
@@ -194,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                                 return `<p class="card-text no-channel-text">${channelKey}</p>`
                                             }
                                         } else {
-                                            return `<p class="card-text"> ${key}</p>`;
+                                            return `<p class="card-text"> ${channel}</p>`;
                                         }
                                     }).join(' ')}</div>` 
                                     : `<p class="card-text no-channel-text">Es liegen noch keine Sender vor!</p>`}
@@ -203,12 +227,12 @@ document.addEventListener("DOMContentLoaded", function() {
                             <div class="team-info">
                                 <div class="text-center">
                                     <img src="${game.home_logo}" alt="${game.home_team} logo" class="img-fluid team-logo">
-                                    <h5 class="card-title mb-0 text-center">${game.home_team}</h5>
+                                    <h5 class="card-title mb-0 text-center">${game.home_german}</h5>
                                 </div>
                                 <span class="vs-text">vs</span>
                                 <div class="text-center">
                                     <img src="${game.away_logo}" alt="${game.away_team} logo" class="img-fluid team-logo">
-                                    <h5 class="card-title mb-0 text-center">${game.away_team}</h5>
+                                    <h5 class="card-title mb-0 text-center">${game.away_german}</h5>
                                 </div>
                             </div>
                         </div>
