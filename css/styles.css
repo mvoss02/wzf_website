@@ -95,6 +95,17 @@ body {
     padding: 40px;
 }
 
+.footer {
+    color: #6b6a6a; /* Use a very light gray or almost white color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Smooth transition for color change */
+}
+
+.light-footer:hover {
+    color: #c4c4c4; /* Change color to white on hover */
+}
+
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

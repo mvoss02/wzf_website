@@ -59,6 +59,18 @@ document.addEventListener("DOMContentLoaded", function() {
         'Friendlies': 'Friendlies'
     };
 
+    // Add click event listener for Impressum link
+    document.getElementById('impressum-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        window.open('path_to_your_impressum_pdf', '_blank');
+    });
+
+    // Add click event listener for Datenschutz link
+    document.getElementById('datenschutz-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        window.open('path_to_your_datenschutz_pdf', '_blank');
+    });
+
     const reverseLeagueNameTranslations = {};
     for (const [english, translated] of Object.entries(leagueNameTranslations)) {
         reverseLeagueNameTranslations[translated] = english;
