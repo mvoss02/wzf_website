@@ -59,16 +59,46 @@ document.addEventListener("DOMContentLoaded", function() {
         'Friendlies': 'Friendlies'
     };
 
-    document.getElementById('impressum-link').addEventListener('click', function(event) {
-        event.preventDefault();
-        document.getElementById('impressum-overlay').style.display = 'flex';
-    });
+    function isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
+    }
 
-    document.getElementById('datenschutz-link').addEventListener('click', function(event) {
-        event.preventDefault();
-        document.getElementById('datenschutz-overlay').style.display = 'flex';
-    });
+    function openPdfInNewTab(pdfUrl) {
+        window.open(pdfUrl, '_blank');
+    }
 
+    function handlePdfLinks() {
+        const impressumLink = document.getElementById('impressum-link');
+        const datenschutzLink = document.getElementById('datenschutz-link');
+        const impressumFrame = document.getElementById('impressumFrame');
+        const datenschutzFrame = document.getElementById('datenschutzFrame');
+
+        if (isMobileDevice()) {
+            impressumLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                openPdfInNewTab(impressumFrame.src);
+            });
+
+            datenschutzLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                openPdfInNewTab(datenschutzFrame.src);
+            });
+        } else {
+            impressumLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.getElementById('impressum-overlay').style.display = 'flex';
+            });
+
+            datenschutzLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.getElementById('datenschutz-overlay').style.display = 'flex';
+            });
+        }
+    }
+
+    handlePdfLinks();
+
+    // Your existing event listeners for closing the overlays...
     document.getElementById('close-impressum').addEventListener('click', function() {
         document.getElementById('impressum-overlay').style.display = 'none';
     });
@@ -88,6 +118,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('datenschutz-overlay').style.display = 'none';
         }
     });
+
 
     const reverseLeagueNameTranslations = {};
     for (const [english, translated] of Object.entries(leagueNameTranslations)) {
