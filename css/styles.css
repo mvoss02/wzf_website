@@ -1,6 +1,13 @@
+html { 
+    overflow: auto; 
+    -webkit-overflow-scrolling: touch; 
+}
+
 body {
     background-color: #23272b;
     color: wheat; /* Set text color */
+    overflow: auto; 
+    -webkit-overflow-scrolling: touch;
 }
 
 .container {
