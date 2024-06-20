@@ -59,16 +59,34 @@ document.addEventListener("DOMContentLoaded", function() {
         'Friendlies': 'Friendlies'
     };
 
-    // Add click event listener for Impressum link
     document.getElementById('impressum-link').addEventListener('click', function(event) {
         event.preventDefault();
-        window.open('path_to_your_impressum_pdf', '_blank');
+        document.getElementById('impressum-overlay').style.display = 'flex';
     });
 
-    // Add click event listener for Datenschutz link
     document.getElementById('datenschutz-link').addEventListener('click', function(event) {
         event.preventDefault();
-        window.open('path_to_your_datenschutz_pdf', '_blank');
+        document.getElementById('datenschutz-overlay').style.display = 'flex';
+    });
+
+    document.getElementById('close-impressum').addEventListener('click', function() {
+        document.getElementById('impressum-overlay').style.display = 'none';
+    });
+
+    document.getElementById('close-datenschutz').addEventListener('click', function() {
+        document.getElementById('datenschutz-overlay').style.display = 'none';
+    });
+
+    document.getElementById('impressum-overlay').addEventListener('click', function(event) {
+        if (event.target.id === 'impressum-overlay') {
+            document.getElementById('impressum-overlay').style.display = 'none';
+        }
+    });
+
+    document.getElementById('datenschutz-overlay').addEventListener('click', function(event) {
+        if (event.target.id === 'datenschutz-overlay') {
+            document.getElementById('datenschutz-overlay').style.display = 'none';
+        }
     });
 
     const reverseLeagueNameTranslations = {};
@@ -192,6 +210,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // Display games grouped by league
         for (const league in gamesByLeague) {
             const leagueGames = gamesByLeague[league];
+
+            // Sort games by time
+            leagueGames.sort((a, b) => a.time.localeCompare(b.time));
     
             // Get translated league name or fallback to original name
             const translatedLeagueName = leagueNameTranslations[league] || league;
